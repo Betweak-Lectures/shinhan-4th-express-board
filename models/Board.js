@@ -11,19 +11,15 @@ const boardSchema = new mongoose.Schema({
     // createdAt: {type:Date, default:Date.now},
 },{
     timestamps: true,
-    toJSON: {
-        virtuals:true
-    },
-    toObject: {virtuals:true},
+    // toJSON: {
+    //     virtuals:true
+    // },
+    // toObject: {virtuals:true},
 });
 
 
-
-
-
-
-// boardSchema.set('toJSON', {virtuals: true});
-// boardSchema.set('toObject', {virtuals: true});
+boardSchema.set('toJSON', {virtuals: true});
+boardSchema.set('toObject', {virtuals: true});
 boardSchema.virtual('comments', {
     ref: "Comment",
     localField: "_id",

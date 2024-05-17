@@ -9,11 +9,15 @@ const mongoose = require('mongoose');
 
 // .env파일 읽고 환경설정
 dotenv.config();
+// process.env (프로세스 환경변수)에
+
 // path에 해당하는 .env파일 읽고 config
-// dotenv.config({path: '.env'});
+// dotenv .config({path: '.env'});
+
+console.log(process.env.MONGO_URI);
 
 mongoose.connect(
-  process.env.MONGO_URI,
+  process.env.MONGO_URI
 ).then(()=>{
   console.log("MongoDB Connected");
 }).catch(err=>{
