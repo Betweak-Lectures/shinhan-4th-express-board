@@ -14,8 +14,6 @@ dotenv.config();
 // path에 해당하는 .env파일 읽고 config
 // dotenv .config({path: '.env'});
 
-console.log(process.env.MONGO_URI);
-
 mongoose.connect(
   process.env.MONGO_URI
 ).then(()=>{

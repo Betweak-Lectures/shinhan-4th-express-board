@@ -16,8 +16,82 @@ router.get('/:boardId', (req, res)=>{
     // url에서 <:boardId> 부분을 req.params라는 객체의 boardId키로 조회
     Board.findById(req.params.boardId)
         .populate('comments').then(result=>{
+            if (!result){
+                res.status(404).send();
+            }
+            res.json(result);
+    })
+});
+
+// (/board/) POST: 게시글 등록
+router.post('/', (req, res)=>{
+    // console.log(req.headers);
+    // console.log(req.body);
+    const {title, content, author} = req.body
+    Board.create({
+        title: title,
+        content: content,
+        author: author
+    }).then(result=>{
+        res.status(201).json(result);
+    })
+});
+
+// put요청: (/:boardId) => <:boardId>에 해당하는 게시글 수정
+router.put('/:boardId', (req, res)=>{
+    const {title, content} = req.body;
+    Board.findByIdAndUpdate(req.params.boardId,{
+        title: title,
+        content: content
+    }).then(result=>{
+        res.json(result);
+    });
+})
+
+// delete요청: (/:boardId) => <:boardId>에 해당하는 게시글 삭제
+router.delete('/:boardId', (req, res)=>{
+    const boardId = req.params.boardId;
+    Board.findByIdAndDelete(boardId).then(result=>{
+        res.status(204).send();
+    });
+})
+
+router.post('/:boardId/comments', (req, res)=>{
+    const boardId = req.params.boardId;
+    const {content, author} = req.body;
+    Comment.create({
+        content: content,
+        author: author,
+        board: boardId
+    }).then(result=>{
         res.json(result);
     })
+});
+
+router.put("/:boardId/comments/:commentId", (req, res)=>{
+    const {boardId, commentId} = req.params;
+    const {content, author} = req.body;
+    Comment.findOneAndUpdate({
+        board: boardId,
+        _id: commentId
+    }, {
+        content: content,
+        author: author
+    }).then(result=>{
+        res.json(result);
+    })
+});
+
+router.delete('/:boardId/comments/:commentId', (req, res)=>{
+    const {boardId, commentId}= req.params;
+    Comment.findOneAndDelete({
+        board: boardId,
+        _id: commentId
+    }).then(result=>{
+        res.status(204).send();
+    })
 })
+
+
 
 module.exports = router;
