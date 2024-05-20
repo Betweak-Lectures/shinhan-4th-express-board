@@ -8,6 +8,8 @@ const cors = require('cors');
 
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
+const session = require('express-session');
+
 
 // .env파일 읽고 환경설정
 dotenv.config();
@@ -42,6 +44,20 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "<my-secret>",
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+      httpOnly: true,
+      secure: false, 
+    },
+  })
+);
+
+
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/board', boardRouter);
@@ -73,7 +89,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.json(err);
 });
 
 module.exports = app;
