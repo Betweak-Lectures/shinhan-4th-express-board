@@ -4,6 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+const cors = require('cors');
+
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
 
@@ -30,6 +32,7 @@ const boardRouter = require('./routes/board');
 const birdRouter = require('./routes/birds');
 
 var app = express();
+// app.use(cors());
 
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
