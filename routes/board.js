@@ -6,10 +6,21 @@ const Board = require('../models/Board');
 
 // (/board) GET: 전체 게시글 조회
 router.get('/', (req, res)=>{
+    console.log(req.session.boardPath);
     Board.find().then(result=>{
         res.json(result);
     });
 });
+
+function trackBoard(sess, boardTitle){
+    if (!sess.boardPath){
+        sess.boardPath = [];
+    }
+    if (sess.boardPath.length===10){
+        sess.boardPath.shift();
+    } 
+    sess.boardPath.push(boardTitle);
+}
 
 // (/board/:boardId) GET: <:boardId>에 해당하는 게시글 조회
 router.get('/:boardId', (req, res)=>{
@@ -19,8 +30,10 @@ router.get('/:boardId', (req, res)=>{
             if (!result){
                 res.status(404).send();
             }
+            trackBoard(req.session, result.title)
             res.json(result);
-    })
+    });
+
 });
 
 // (/board/) POST: 게시글 등록

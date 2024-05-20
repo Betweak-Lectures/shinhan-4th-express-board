@@ -56,6 +56,22 @@ app.use(
   })
 );
 
+app.use((req, res, next)=>{
+  if(!req.session.paths){
+    req.session.paths = [];
+  }
+
+  req.session.paths.push(req.path);
+
+  console.log(req.session.paths);
+
+  console.log(app._router);
+
+  next();  
+});
+
+
+
 
 
 app.use(express.static(path.join(__dirname, 'public')));
