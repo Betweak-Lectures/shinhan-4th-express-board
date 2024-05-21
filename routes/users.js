@@ -38,21 +38,12 @@ router.post("/login", async (req, res, next) => {
 
 router.all("/logout", async (req, res, next) => {
   try {
-    const { email, password } = req.body;
-    const user = await User.login(email, password);
-    const tokenMaxAge = 60 * 60 * 24 * 3;
-    const token = createToken(user, tokenMaxAge);
-
-    user.token = token;
-
-    res.cookie("authToken", token, {
+    res.cookie("authToken", "", {
       httpOnly: true,
       expires: new Date(Date.now()),
     });
-    // res.cookie("");
-
-    console.log(user);
-    res.status(201).json(user);
+    res.status(204).send();
+    
   } catch (err) {
     console.error(err);
     res.status(400);
