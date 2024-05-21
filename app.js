@@ -63,9 +63,9 @@ app.use((req, res, next)=>{
 
   req.session.paths.push(req.path);
 
-  console.log(req.session.paths);
+  // console.log(req.session.paths);
 
-  console.log(app._router);
+  // console.log(app._router);
 
   next();  
 });
@@ -78,6 +78,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/board', boardRouter);
 app.use('/birds', birdRouter);
+
+app.use('/users', usersRouter);
 
 app.get('/', function(req, res){
   console.log(req);
