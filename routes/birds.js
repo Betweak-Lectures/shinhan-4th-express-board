@@ -1,7 +1,14 @@
 const express = require('express');
 const router = express.Router();
 
+const {loginRequired} = require('../utils/auth');
+router.get('/protected', loginRequired, (req, res)=>{
+    // 로그인 된 유저만 접근 가능.
+    res.send("Protected Resource!");
+})
+
 router.get('/', (req, res)=>{
+    console.log(req.user);
     // console.log("현재 Cookie", req.cookies);    
 
     // res.cookie('cookieName', "my-cookie-value",{

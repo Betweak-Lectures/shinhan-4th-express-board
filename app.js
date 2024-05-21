@@ -73,8 +73,10 @@ app.use((req, res, next)=>{
 
 
 
-
 app.use(express.static(path.join(__dirname, 'public')));
+
+const { authenticate } = require('./utils/auth');
+app.use(authenticate);
 
 app.use('/board', boardRouter);
 app.use('/birds', birdRouter);
@@ -107,6 +109,8 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
+  
+  // res.render(err);
   res.json(err);
 });
 
