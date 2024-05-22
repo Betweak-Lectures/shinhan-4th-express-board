@@ -34,7 +34,7 @@ const boardRouter = require('./routes/board');
 const birdRouter = require('./routes/birds');
 
 var app = express();
-// app.use(cors());
+app.use(cors());
 
 // view engine setup
 // app.set('views', path.join(__dirname, 'views'));
@@ -55,6 +55,8 @@ app.use(
     },
   })
 );
+
+
 
 app.use((req, res, next)=>{
   if(!req.session.paths){
@@ -78,10 +80,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 const { authenticate } = require('./utils/auth');
 app.use(authenticate);
 
-app.use('/board', boardRouter);
-app.use('/birds', birdRouter);
+const apiRouter = require('./routes/api');
+app.use('/api', apiRouter);
 
-app.use('/users', usersRouter);
+
+// app.use('/birds', birdRouter);
+// app.use('/board', boardRouter);
+// app.use('/users', usersRouter);
 
 app.get('/', function(req, res){
   console.log(req);
